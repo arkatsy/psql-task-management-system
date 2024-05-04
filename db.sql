@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS Task (
     description TEXT,
     deadline DATE,
     status VARCHAR(20) NOT NULL,
-    assigned_to INT[] REFERENCES User(user_id)
+    assigned_to INT REFERENCES User(user_id),
+    project INT REFERENCES Project(project_id)
 );
 
 -- Trigger for updating the updated_at column
