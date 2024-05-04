@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS "User" (
+CREATE TABLE IF NOT EXISTS App_User (
     user_id SERIAL PRIMARY KEY,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS "User" (
     last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(20) NOT NULL,
+    role VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Task (
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS Task (
     description TEXT,
     deadline DATE,
     status VARCHAR(20) NOT NULL,
-    assigned_to INT REFERENCES "User"(user_id),
+    assigned_to INT REFERENCES App_User(user_id)
 );
 
 CREATE TABLE IF NOT EXISTS Project (
@@ -27,27 +27,27 @@ CREATE TABLE IF NOT EXISTS Project (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     project_name VARCHAR(255) NOT NULL,
     description TEXT,
-    created_by INT REFERENCES "User"(user_id),
+    created_by INT REFERENCES App_User(user_id)
 );
 
 -- Junction tables for many-to-many relationships between User, Project, and Task
 CREATE TABLE IF NOT EXISTS User_Project (
-    user_id INT REFERENCES "User"(user_id),
+    user_id INT REFERENCES App_User(user_id),
     project_id INT REFERENCES Project(project_id),
-    PRIMARY KEY (user_id, project_id),
-)
+    PRIMARY KEY (user_id, project_id)
+);
 
 CREATE TABLE IF NOT EXISTS User_Task (
-    user_id INT REFERENCES "User"(user_id),
+    user_id INT REFERENCES App_User(user_id),
     task_id INT REFERENCES Task(task_id),
-    PRIMARY KEY (user_id, task_id),
-)
+    PRIMARY KEY (user_id, task_id)
+);
 
 CREATE TABLE IF NOT EXISTS Project_Task (
     project_id INT REFERENCES Project(project_id),
     task_id INT REFERENCES Task(task_id),
-    PRIMARY KEY (project_id, task_id),
-)
+    PRIMARY KEY (project_id, task_id)
+);
 
 -- Trigger for updating the updated_at column
 CREATE OR REPLACE FUNCTION trigger_update_timestamp()
