@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS User (
+CREATE TABLE IF NOT EXISTS "User" (
     user_id SERIAL PRIMARY KEY,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS User (
     password VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL,
     projects INT[] REFERENCES Project(project_id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS Project (
     project_id SERIAL PRIMARY KEY,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS Project (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     project_name VARCHAR(255) NOT NULL,
     description TEXT,
-    created_by INT REFERENCES User(user_id),
+    created_by INT REFERENCES "User"(user_id),
     tasks INT[] REFERENCES Task(task_id)
 );
 
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS Task (
     description TEXT,
     deadline DATE,
     status VARCHAR(20) NOT NULL,
-    assigned_to INT REFERENCES User(user_id),
+    assigned_to INT REFERENCES "User"(user_id),
     project INT REFERENCES Project(project_id)
 );
 
